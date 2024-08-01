@@ -322,8 +322,6 @@ def view_competency_report():
         SELECT
             c.competency_id,
             c.name AS competency_name,
-            u.user_id,
-            u.first_name || ' ' || u.last_name AS full_name,
             ROUND(AVG(ar.score)) AS avg_score_percentage,
             CASE
                 WHEN AVG(ar.score) >= 90 THEN 4
@@ -335,17 +333,15 @@ def view_competency_report():
         FROM AssessmentResults ar
         JOIN Assessments a ON ar.assessment_id = a.assessment_id
         JOIN Competencies c ON a.competency_id = c.competency_id
-        JOIN Users u ON ar.user_id = u.user_id
-        GROUP BY c.competency_id, u.user_id
+        GROUP BY c.competency_id
     '''
-
     rows = cursor.execute(query).fetchall()
-    print(f'{"User ID":<9} {"Fullname":<20} {"Competency ID":<15} {"Competency Name":<35} {"Score":<8} {"Competency Level":<20}')
-    print(f'{"-------":<9} {"--------":<20} {"-------------":<15} {"---------------":<35} {"-----":<8} {"----------------":<20}')
+    print(f'{"Competency ID":<15} {"Competency Name":<35} {"Average Score":<15} {"Competency Level":<20}')
+    print(f'{"-------------":<15} {"---------------":<35} {"-------------":<15} {"---------------":<20}')
     for row in rows:
         row = [str(x) for x in row]
         # fullname = row[1] + " " + row[2]
-        print(f'{row[2]:<9} {row[3]:<20} {row[0]:<15} {row[1]:<35} {row[4]:<8} {row[5]:<20}')
+        print(f'{row[0]:<15} {row[1]:<35} {row[2]:<15} {row[3]:<20}')
 
 def view_competency_report_users():
     query = '''
@@ -663,8 +659,6 @@ def export_competency_report():
         SELECT
             c.competency_id,
             c.name AS competency_name,
-            u.user_id,
-            u.first_name || ' ' || u.last_name AS full_name,
             ROUND(AVG(ar.score)) AS avg_score_percentage,
             CASE
                 WHEN AVG(ar.score) >= 90 THEN 4
@@ -676,8 +670,7 @@ def export_competency_report():
         FROM AssessmentResults ar
         JOIN Assessments a ON ar.assessment_id = a.assessment_id
         JOIN Competencies c ON a.competency_id = c.competency_id
-        JOIN Users u ON ar.user_id = u.user_id
-        GROUP BY c.competency_id, u.user_id
+        GROUP BY c.competency_id
     '''
 
     rows = cursor.execute(query).fetchall()
@@ -688,7 +681,7 @@ def export_competency_report():
     with open(csv_file_name, mode='w', newline='') as file:
         writer = csv.writer(file)
 
-        writer.writerow(['Competency ID', 'Competency Name', 'User ID', 'Full Name', 'Average Score (%)', 'Competency Level'])
+        writer.writerow(['Competency ID', 'Competency Name', 'Average Score (%)', 'Competency Level'])
 
         for row in rows:
             writer.writerow(row)
