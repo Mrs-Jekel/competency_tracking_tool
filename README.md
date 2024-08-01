@@ -40,6 +40,7 @@ Users
 -Search for a user
 -Add a user
 -Update user information
+
 Competencies
 -View all competencies
 -Add a competency
@@ -47,16 +48,19 @@ Competencies
 -View competency summary by competency
 -View competency results summary
 -View user competency summary
+
 Assessments
 -View all assessments
 -Add an assessment
 -Edit an assessment
+
 Assessment Results
 -View all assessment results
 -Add an assessment result
 -Edit an assessment result
 -View individual assessment results
 -Delete an assessment result
+
 Reports
 -View all users and their competency levels
 -View competency level for an individual user
@@ -65,6 +69,7 @@ Reports
 -Export competency report by users
 -Export competency report for an individual user
 -Exporting Reports
+
 Reports can be exported to CSV files and PDF files for individual users.
 
 Importing Data
