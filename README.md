@@ -21,8 +21,7 @@ Create the SQLite database competency_tracking.db and set up the necessary table
 Database Schema
 The SQLite database should include the following tables:
 
-#Users
-
+Users
 Competencies
 Assessments
 AssessmentResults
