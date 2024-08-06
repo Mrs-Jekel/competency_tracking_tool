@@ -29,7 +29,7 @@ def create_tables():
                 name TEXT NOT NULL,
                 level INTEGER CHECK(level BETWEEN 0 AND 4),
                 date_created TEXT NOT NULL,
-                FOREIGN KEY (competency_id) REFERENCES Competencies (competency_id)
+                FOREIGN KEY (competency_id) REFERENCES Assessments (competency_id)
             )
         ''')
         cursor.execute('''
@@ -201,19 +201,6 @@ def view_assessments_per_user():
     for row in rows:
         print(f'{row[2]:<25} {row[0]:<20} {row[1]:<10} ')
 
-    # user = input("Enter User Id: \n")
-    # query = '''SELECT a.assessment_id, a.assessment_name, a.date_created, ar.assessment_id, u.user_id, u.first_name
-    #         FROM Assessments a
-    #         JOIN AssessmentResults ar ON a.assessment_id = ar.assessment_id
-    #         JOIN Users u ON ar.user_id = u.user_id
-    #         WHERE u.user_id = ?'''
-
-    # rows = cursor.execute(query,(user,)).fetchall()
-    # print(f'{"Name":<15} {"Assessment":<20}') 
-    # print(f'{"----":<15} {"----------":<20}')
-    # for row in rows:
-    #     row = [str(x) for x in row]
-    #     print(f'{row[5]:<15} {row[1]:<20}')
 
 def view_all_users():
 
@@ -223,15 +210,7 @@ def view_all_users():
     for row in rows:
         row = [str(x) for x in row]
         print(f'{row[0]:<8} {row[1]:<15} {row[2]:<15} {row[3]:<15} {row[4]:<25} ')
-# view_all_users()
 
-# def view_all_competency_levels():
-#     rows = cursor.execute("SELECT user_id, first_name, last_name FROM Users").fetchall()
-#     print(f'{" ID ":<4} {"Firstname":<25} {"Lastname":<25}')
-#     print(f'{"----":<4} {"---------":<25} {"--------":<25}')
-#     for row in rows:
-#         row = [str(x) for x in row]
-#         print(f'{row[0]:<4} {row[1]:<25} {row[2]:<25}')
 
 def view_all_competencies():
     rows = cursor.execute("SELECT competency_id, name FROM Competencies").fetchall()
@@ -340,7 +319,6 @@ def view_competency_report():
     print(f'{"-------------":<15} {"---------------":<35} {"-------------":<15} {"---------------":<20}')
     for row in rows:
         row = [str(x) for x in row]
-        # fullname = row[1] + " " + row[2]
         print(f'{row[0]:<15} {row[1]:<35} {row[2]:<15} {row[3]:<20}')
 
 def view_competency_report_users():
@@ -642,7 +620,6 @@ def delete_assessment_result():
 def search():
     search_term = input("\nInsert First or Last name: \n").upper()
     rows = cursor.execute("SELECT user_id, first_name, last_name, phone, email, hire_date, user_type FROM Users WHERE first_name LIKE ? OR last_name LIKE ?", (f'%{search_term}%', f'%{search_term}%',)).fetchall()
-# rows = cursor.execute("SELECT name, street_address, city, state, postal_code, phone FROM Customers WHERE name LIKE ?", (('%' + search_term + '%',))).fetchall()
 
     print(f'{"ID":<4} {"Fullname":<20} {"Phone":<15} {"Email":<25} {"Hire Date":<15} {"User Type":<10}')
     print(f'{"--":<4} {"--------":<20} {"-----":<15} {"-----":<25} {"---------":<15} {"---------":<10}')
@@ -651,7 +628,6 @@ def search():
         row = [str(x) for x in row]
         fullname = row[1] + " " + row[2]
         print(f'{row[0]:<4} {fullname:<20} {row[3]:<15} {row[4]:<25} {row[5]:<15} {row[6]:<10}')
-# search()
 
 
 def export_competency_report():
@@ -753,8 +729,6 @@ def export_competency_report_for_user():
 
     rows = cursor.execute(query, (user_id,)).fetchall()
 
-    # csv_file_name = input("What would you like to name your csv file? ")
-    # csv_file_name = f'competency_{csv_file_name}_user{user_id}.csv'
     csv_file_name = f'competency_report_user_{user_id}.csv'
 
     with open(csv_file_name, mode='w', newline='') as file:
@@ -957,8 +931,7 @@ def login_user(email, password):
                             break
                 
                 elif user_action == "2":
-                    # user_id = cursor.execute('SELECT user_id FROM Users WHERE email=?', (email,)).fetchone()[0]
-                    # specific_user = user_id[0] 
+    
                     view_ind_assessments(user_id)
                     print("\n")
 
@@ -976,12 +949,3 @@ email = input("Email: ")
 password = input("Password: ")
 login_user(email,password)
 
-# register_user('howdyfriends@example.com', 'whatsup', 'Des', 'Peatree', '5555558555', '2024-07-25', 'manager')
-# login_user('Joseph@anders.com', 'HelloPeople12')
-# register_user('howdy@example.com', 'password', 'John', 'Doe', '1234567890', '2024-07-25', 'manager')
-# login_user('howdy@example.com', 'password')
-
-
-# register_user('hi@howdy','kasuhpgfah15','jill','johnson','1346589845','May 30', 'Manager')
-# import_assessment_results('assessment_results.csv')
-# export_users_to_csv('users_export.csv')
