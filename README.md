@@ -74,3 +74,7 @@ Reports can be exported to CSV files and PDF files for individual users.
 Importing Data
 Assessment results can be imported from CSV files.
 
+LOGIN INFO
+Manager login - howdy@example.com, password - "password"
+user login - Joseph@anders.com, password - "HelloPeople12"
+
